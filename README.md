@@ -107,10 +107,17 @@ When you run the program, you should see:
 
 ```
 OpenGL/
-├── circle_demo.c       # Main circle drawing demo
-├── Makefile           # Build configuration for Make
-├── CMakeLists.txt     # Build configuration for CMake
-└── README.md          # This file
+├── circle_demo.c          # Circle drawing demo
+├── scanline_fill.cpp      # Scan line polygon fill algorithm
+├── clipping.cpp           # Cohen-Sutherland line clipping algorithm
+├── polygon_clipping.cpp   # Sutherland-Hodgman polygon clipping
+├── flower.cpp             # Flower pattern demo
+├── flag.cpp               # Flag drawing demo
+├── bresenham_circle.cpp   # Bresenham circle algorithm
+├── rotating_square.cpp    # Rotating square animation
+├── Makefile              # Build configuration for Make
+├── CMakeLists.txt        # Build configuration for CMake
+└── README.md             # This file
 ```
 
 ## Learning Resources
@@ -119,11 +126,71 @@ OpenGL/
 - GLUT Tutorial: https://www.opengl.org/resources/libraries/glut/
 - LearnOpenGL: https://learnopengl.com/
 
+## Graphics Algorithms Demos
+
+### 1. Scan Line Fill Algorithm (`scanline_fill.cpp`)
+
+Demonstrates the scan line polygon fill algorithm.
+
+**How to use:**
+- Click to add polygon vertices
+- Press 'f' to fill the polygon
+- Press 'c' to clear and start over
+
+**Build:**
+```bash
+g++ scanline_fill.cpp -o scanline_fill.exe -Ifreeglut/freeglut/include -Lfreeglut/freeglut/lib -lopengl32 -lglu32 -lfreeglut -lwinmm -lgdi32
+./scanline_fill.exe
+```
+
+### 2. Cohen-Sutherland Line Clipping (`clipping.cpp`)
+
+Demonstrates the Cohen-Sutherland line clipping algorithm against a rectangular window.
+
+**How to use:**
+- Press '1' to show predefined test lines
+- Press '2' to draw your own lines (click two points per line)
+- Press 'c' to clear
+
+**Visualization:**
+- Red dashed lines: Original lines
+- Green solid lines: Clipped lines (parts inside clipping window)
+- Black rectangle: Clipping window boundary
+
+**Build:**
+```bash
+g++ clipping.cpp -o clipping.exe -Ifreeglut/freeglut/include -Lfreeglut/freeglut/lib -lopengl32 -lglu32 -lfreeglut -lwinmm -lgdi32
+./clipping.exe
+```
+
+### 3. Sutherland-Hodgman Polygon Clipping (`polygon_clipping.cpp`)
+
+Demonstrates the Sutherland-Hodgman polygon clipping algorithm.
+
+**How to use:**
+- Press '1' to show predefined polygon
+- Press '2' to draw your own polygon (click to add vertices)
+- Press 'f' to finish drawing and perform clipping
+- Press 'c' to clear
+
+**Visualization:**
+- Red outlined polygon: Original polygon
+- Green filled polygon: Clipped polygon (part inside clipping window)
+- Black rectangle: Clipping window boundary
+
+**Build:**
+```bash
+g++ polygon_clipping.cpp -o polygon_clipping.exe -Ifreeglut/freeglut/include -Lfreeglut/freeglut/lib -lopengl32 -lglu32 -lfreeglut -lwinmm -lgdi32
+./polygon_clipping.exe
+```
+
 ## Next Steps
 
-Try modifying the demo:
+Try modifying the demos:
 - Change the circle color by modifying `glColor3f()` parameters
 - Change the circle radius
 - Draw multiple circles
 - Add animation using `glutTimerFunc()`
 - Draw other shapes (ellipse, rectangle, polygon)
+- Modify clipping window boundaries in clipping algorithms
+- Experiment with different polygon shapes in fill and clipping algorithms

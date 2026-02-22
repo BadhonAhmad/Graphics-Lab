@@ -1,0 +1,187 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build OpenGL Circle Demo",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "circle_demo.c",
+                "-o",
+                "circle_demo.exe",
+                "-Ifreeglut/freeglut/include",
+                "-Lfreeglut/freeglut/lib",
+                "-lopengl32",
+                "-lglu32",
+                "-lfreeglut",
+                "-lwinmm",
+                "-lgdi32"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Build and Run OpenGL Circle Demo",
+            "type": "shell",
+            "command": "gcc circle_demo.c -o circle_demo.exe -Ifreeglut/freeglut/include -Lfreeglut/freeglut/lib -lopengl32 -lglu32 -lfreeglut -lwinmm -lgdi32; if ($?) { Copy-Item freeglut/freeglut/bin/freeglut.dll . -Force; ./circle_demo.exe }",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Run OpenGL Circle Demo",
+            "type": "shell",
+            "command": "./circle_demo.exe",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build with Make",
+            "type": "shell",
+            "command": "make",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Clean Build Files",
+            "type": "shell",
+            "command": "make clean",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build Flower Pattern",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "flower.cpp",
+                "-o",
+                "flower.exe",
+                "-Ifreeglut/freeglut/include",
+                "-Lfreeglut/freeglut/lib",
+                "-lopengl32",
+                "-lglu32",
+                "-lfreeglut",
+                "-lwinmm",
+                "-lgdi32"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Build and Run Flower Pattern",
+            "type": "shell",
+            "command": "g++ flower.cpp -o flower.exe -Ifreeglut/freeglut/include -Lfreeglut/freeglut/lib -lopengl32 -lglu32 -lfreeglut -lwinmm -lgdi32; if ($?) { ./flower.exe }",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Build Flag",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "flag.cpp",
+                "-o",
+                "flag.exe",
+                "-Ifreeglut/freeglut/include",
+                "-Lfreeglut/freeglut/lib",
+                "-lopengl32",
+                "-lglu32",
+                "-lfreeglut",
+                "-lwinmm",
+                "-lgdi32"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Build and Run Flag",
+            "type": "shell",
+            "command": "g++ flag.cpp -o flag.exe -Ifreeglut/freeglut/include -Lfreeglut/freeglut/lib -lopengl32 -lglu32 -lfreeglut -lwinmm -lgdi32; if ($?) { ./flag.exe }",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "type": "cppbuild",
+            "label": "C/C++: gcc.exe build active file",
+            "command": "C:/MinGW/bin/gcc.exe",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "-I${workspaceFolder}/freeglut/freeglut/include",
+                "-L${workspaceFolder}/freeglut/freeglut/lib",
+                "-lopengl32",
+                "-lglu32",
+                "-lfreeglut",
+                "-lwinmm",
+                "-lgdi32"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Task generated by Debugger."
+        }
+    ]
+}

@@ -112,13 +112,26 @@ OpenGL/
 ├── clipping.cpp           # Cohen-Sutherland line clipping algorithm
 ├── polygon_clipping.cpp   # Sutherland-Hodgman polygon clipping
 ├── flower.cpp             # Flower pattern demo
-├── flag.cpp               # Flag drawing demo
-├── bresenham_circle.cpp   # Bresenham circle algorithm
-├── rotating_square.cpp    # Rotating square animation
-├── Makefile              # Build configuration for Make
-├── CMakeLists.txt        # Build configuration for CMake
-└── README.md             # This file
 ```
+OpenGL/
+├── circle_demo.c                          # Circle drawing demo
+├── scanline_fill.cpp                      # Scan line polygon fill algorithm
+├── clipping.cpp                           # Cohen-Sutherland line clipping
+├── polygon_clipping.cpp                   # Sutherland-Hodgman polygon clipping
+├── flower.cpp                             # Flower pattern demo
+├── flag.cpp                               # Flag drawing demo
+├── bresenham_circle.cpp                   # Bresenham circle algorithm
+├── rotating_square.cpp                    # Rotating square animation
+├── advanced_composite_transformations.cpp # 🎓 2D transformations via matrix multiplication
+├── advanced_cohen_sutherland.cpp          # 🎓 Cohen-Sutherland line clipping (complete)
+├── advanced_weiler_atherton.cpp           # 🎓 Weiler-Atherton polygon clipping
+├── Makefile                              # Build configuration for Make
+├── CMakeLists.txt                        # Build configuration for CMake
+└── README.md                             # This file
+```
+
+**🎓 = Advanced Graphics Lab Programs** (ready for challenging lab assignments!)
+
 
 ## Learning Resources
 
@@ -183,6 +196,171 @@ Demonstrates the Sutherland-Hodgman polygon clipping algorithm.
 g++ polygon_clipping.cpp -o polygon_clipping.exe -Ifreeglut/freeglut/include -Lfreeglut/freeglut/lib -lopengl32 -lglu32 -lfreeglut -lwinmm -lgdi32
 ./polygon_clipping.exe
 ```
+
+---
+
+## 🎓 Advanced Graphics Lab Programs
+
+### 4. Composite Matrix Transformations (`advanced_composite_transformations.cpp`)
+
+**Advanced Implementation of 2D transformations using homogeneous coordinates and matrix multiplication.**
+
+**Features:**
+- Custom 3×3 transformation matrix implementation
+- Homogeneous coordinate system (x, y, w)
+- Composite transformations via matrix multiplication
+- Demonstrates order dependency (T×R ≠ R×T)
+- Interactive transformation controls
+- Real-time matrix display
+- Visual comparison of transformation orders
+
+**Mathematical Concepts:**
+- Translation matrix: T(tx, ty)
+- Rotation matrix: R(θ)
+- Scaling matrix: S(sx, sy)
+- Composite: M = T × R × S (rightmost applied first)
+
+**Controls:**
+- `r/R`: Rotate counter-clockwise/clockwise (5° increments)
+- Arrow keys: Translate object
+- `+/-`: Scale up/down
+- `1`: Apply Translation × Rotation (T × R)
+- `2`: Apply Rotation × Translation (R × T)
+- `3`: Apply full composite (T × R × S)
+- `p`: Toggle transformation matrix display
+- `x`: Reset all transformations
+- `Space`: Toggle animation
+
+**Build:**
+```bash
+g++ advanced_composite_transformations.cpp -o advanced_composite_transformations.exe -Ifreeglut/freeglut/include -Lfreeglut/freeglut/lib -lopengl32 -lglu32 -lfreeglut -lwinmm -lgdi32
+./advanced_composite_transformations.exe
+```
+
+**Key Learning:**
+Observe how the ORDER of matrix multiplication matters! Compare modes 1 and 2 to see how T×R produces different results than R×T.
+
+---
+
+### 5. Cohen-Sutherland Line Clipping (`advanced_cohen_sutherland.cpp`)
+
+**Complete implementation of the Cohen-Sutherland line clipping algorithm with region codes.**
+
+**Features:**
+- 4-bit region code calculation (TBRL: Top, Bottom, Right, Left)
+- Trivial acceptance test (both codes = 0000)
+- Trivial rejection test (code1 & code2 ≠ 0)
+- Iterative clipping against window boundaries
+- Multiple test cases demonstrating all scenarios
+- Interactive line drawing mode
+- Region code visualization
+- Step-by-step algorithm demonstration
+
+**Algorithm Steps:**
+1. Compute region codes for both endpoints
+2. If both codes are 0000 → line completely inside (accept)
+3. If (code1 & code2) ≠ 0 → line completely outside (trivial reject)
+4. Otherwise, find intersection with boundary and clip
+5. Repeat until line is accepted or rejected
+
+**Region Codes (4-bit binary):**
+```
+Bit 3 (1000): TOP    - y > ymax
+Bit 2 (0100): BOTTOM - y < ymin
+Bit 1 (0010): RIGHT  - x > xmax
+Bit 0 (0001): LEFT   - x < xmin
+```
+
+**Controls:**
+- `1`: Load comprehensive test cases (10 different scenarios)
+- `2`: Interactive drawing mode (click two points per line)
+- `r`: Toggle region code display
+- `+/-`: Adjust clipping window size
+- `c`: Clear all lines
+
+**Build:**
+```bash
+g++ advanced_cohen_sutherland.cpp -o advanced_cohen_sutherland.exe -Ifreeglut/freeglut/include -Lfreeglut/freeglut/lib -lopengl32 -lglu32 -lfreeglut -lwinmm -lgdi32
+./advanced_cohen_sutherland.exe
+```
+
+**Visualization:**
+- Red dashed: Lines completely outside (rejected)
+- Orange dashed: Lines needing clipping
+- Green dashed: Lines completely inside
+- Dark green solid: Final clipped result
+
+---
+
+### 6. Weiler-Atherton Polygon Clipping (`advanced_weiler_atherton.cpp`)
+
+**Advanced polygon clipping algorithm that can handle complex cases.**
+
+**Features:**
+- Complete Weiler-Atherton algorithm implementation
+- Handles convex clip polygons
+- Supports simple concave subject polygons
+- Intersection point calculation and visualization
+- Entry/exit point determination
+- Vertex list traversal
+- Can produce multiple clipped polygons
+- Interactive polygon drawing
+- Multiple test cases
+
+**Algorithm Overview:**
+1. Find all intersection points between subject and clip polygons
+2. Insert intersection points into both vertex lists
+3. Mark each intersection as "entry" or "exit" point
+4. Start traversal from an entry point
+5. Follow subject polygon edges until exit point
+6. Switch to clip polygon and follow until next entry
+7. Repeat until back to starting point
+8. Result is the clipped polygon
+
+**Advantages over Sutherland-Hodgman:**
+- More general (can clip against concave clip polygons)
+- Can produce multiple disjoint clipped regions
+- Better suited for complex polygon operations
+
+**Controls:**
+- `1`: Load test case (cycles through predefined examples)
+- `2`: Draw subject polygon (polygon to be clipped)
+- `3`: Draw clip polygon (clipping window polygon)
+- Click: Add vertices when in drawing mode
+- `f`: Finish drawing current polygon
+- `p`: Perform Weiler-Atherton clipping
+- `i`: Toggle intersection points display
+- `n`: Next test case
+- `c`: Clear all polygons
+
+**Build:**
+```bash
+g++ advanced_weiler_atherton.cpp -o advanced_weiler_atherton.exe -Ifreeglut/freeglut/include -Lfreeglut/freeglut/lib -lopengl32 -lglu32 -lfreeglut -lwinmm -lgdi32
+./advanced_weiler_atherton.exe
+```
+
+**Visualization:**
+- Orange: Subject polygon (to be clipped)
+- Blue: Clip polygon (clipping window)
+- Green: Clipped result polygon
+- Magenta circles: Intersection points
+
+---
+
+## Build All Advanced Programs
+
+```bash
+# Composite Matrix Transformations
+g++ advanced_composite_transformations.cpp -o advanced_composite_transformations.exe -Ifreeglut/freeglut/include -Lfreeglut/freeglut/lib -lopengl32 -lglu32 -lfreeglut -lwinmm -lgdi32
+
+# Cohen-Sutherland Line Clipping
+g++ advanced_cohen_sutherland.cpp -o advanced_cohen_sutherland.exe -Ifreeglut/freeglut/include -Lfreeglut/freeglut/lib -lopengl32 -lglu32 -lfreeglut -lwinmm -lgdi32
+
+# Weiler-Atherton Polygon Clipping
+g++ advanced_weiler_atherton.cpp -o advanced_weiler_atherton.exe -Ifreeglut/freeglut/include -Lfreeglut/freeglut/lib -lopengl32 -lglu32 -lfreeglut -lwinmm -lgdi32
+```
+
+---
 
 ## Next Steps
 

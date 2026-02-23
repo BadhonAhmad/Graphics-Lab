@@ -174,7 +174,7 @@ void drawBirdShadow()
     float heightRatio = birdY / maxHeight; // 0 at ground, 1 at ceiling
     float shadowBaseSize = BIRD_SIZE * 1.5f;
     float shadowScale = shadowBaseSize * (1.0f + (1.0f - heightRatio) * 2.0f); // grows up to 3x when near ground
-    float shadowAlpha = 0.15f + 0.45f * (1.0f - heightRatio); // darker when closer to ground
+    float shadowAlpha = 0.15f + 0.45f * (1.0f - heightRatio);                  // darker when closer to ground
 
     glPushMatrix();
     glTranslatef(birdX, 0.02f, birdZ); // slightly above ground to avoid z-fighting

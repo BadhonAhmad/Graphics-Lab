@@ -166,9 +166,45 @@ void drawBox(float x, float y, float z, float width, float height, float depth)
     glPopMatrix();
 }
 
+// Draw bird shadow on the ground
+void drawBirdShadow()
+{
+    // Shadow grows as bird gets closer to ground (lower Y = bigger shadow)
+    float maxHeight = 4.0f;
+    float heightRatio = birdY / maxHeight; // 0 at ground, 1 at ceiling
+    float shadowBaseSize = BIRD_SIZE * 1.5f;
+    float shadowScale = shadowBaseSize * (1.0f + (1.0f - heightRatio) * 2.0f); // grows up to 3x when near ground
+    float shadowAlpha = 0.15f + 0.45f * (1.0f - heightRatio); // darker when closer to ground
+
+    glPushMatrix();
+    glTranslatef(birdX, 0.02f, birdZ); // slightly above ground to avoid z-fighting
+
+    glDisable(GL_LIGHTING);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glColor4f(0.0f, 0.0f, 0.0f, shadowAlpha);
+
+    // Draw ellipse on the ground (XZ plane)
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex3f(0.0f, 0.0f, 0.0f);
+    for (int i = 0; i <= 36; i++)
+    {
+        float angle = i * 10.0f * 3.14159f / 180.0f;
+        glVertex3f(shadowScale * cos(angle), 0.0f, shadowScale * 0.5f * sin(angle));
+    }
+    glEnd();
+
+    glDisable(GL_BLEND);
+    glEnable(GL_LIGHTING);
+    glPopMatrix();
+}
+
 // Draw bird
 void drawBird()
 {
+    drawBirdShadow();
+
     glColor3f(1.0f, 0.84f, 0.0f);
     glPushMatrix();
     glTranslatef(birdX, birdY, birdZ);
